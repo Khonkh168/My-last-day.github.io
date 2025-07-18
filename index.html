@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="km">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>សារលា - អនុសាខាស្រីស្នំ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* Keyframes for scrolling text */
+        @keyframes scroll-text {
+          0% {
+            transform: translateY(100%);
+          }
+          100% {
+            transform: translateY(-var(--scroll-height)); /* Dynamic height will be set by JS */
+          }
+        }
+
+        /* Keyframes for floating elements (hearts and text) */
+        @keyframes float-up-element {
+          0% {
+            transform: translateY(0%);
+            opacity: 0;
+          }
+          20% {
+            opacity: 1;
+          }
+          80% {
+            opacity: 1;
+          }
+          100% {
+            transform: translateY(-100vh);
+            opacity: 0;
+          }
+        }
+
+        .heart-icon {
+            position: absolute;
+            animation: float-up-element var(--animation-duration) linear var(--animation-delay) infinite;
+        }
+
+        .last-day-text {
+            position: absolute;
+            animation: float-up-element var(--animation-duration) linear var(--animation-delay) infinite;
+        }
+
+        /* Hide scrollbar for message container */
+        .message-container::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, Opera */
+        }
+        .message-container {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-purple-100 to-pink-100 flex items-center justify-center p-4 font-inter">
+
+    <div id="app-root" class="min-h-screen flex items-center justify-center p-4 font-inter">
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const appRoot = document.getElementById('app-root');
+            let currentPage = 'page1';
+
+            // Detailed farewell message in Khmer
+            const detailedMessage = `
+                ខ្ញុំពិតជាមានមោទនភាព និងរីករាយជាខ្លាំង
+                ដែលបានធ្វើការជាមួយអ្នកទាំងអស់គ្នានៅ
+                ស្រីស្នំជិតមួយឆ្នាំទាំងដែលយើងមកពីខេត្ត​និង
+                ស្រុកផ្សេងៗគ្នាខ្ញុំពិតជាអរគុណអ្នកទាំងអស់គ្នា
+                ចំពោះការគោរពស្រលាញ់អ្នកទាំងអស់គ្នាមក
+                កាន់ខ្ញុំហើយក៏អរគុណទៅកាន់អ្នកទាំងអស់គ្នា
+                កន្លងមកដែលបានសហការនិងធ្វើការជាមួយ
+                គ្នាបានយ៉ាងរលូន​។
+                
+                ទោះបីជាខ្ញុំត្រូវចាកចេញក៏ដោយខ្ញុំសង្ឃឹមថា
+                អ្នកទាំងអស់គ្នា​នឹងបន្តខិតខំប្រឹងប្រែងធ្វើការ
+                ងារដើម្បីទទួលបានលទ្ធផលល្អនៅក្នុងអនុសា
+                ខាស្រីស្នំ។​ ញុមសង្ឃឹមថាសាខាស្រីស្នំនឹងល្អ
+                ​Growth​អតិថិជន​ និង Growth portfolio
+                នៅក្នុងសាខា​ ហើយ  Loan outstanding 
+                គ្នាយើងម្នាក់ៗកាន់ម្ភៃលាន ខ្ញុំសូមជូនពរគ្នា
+                យើងឲ្យទទួលបានលទ្ធផលល្អគ្រប់ៗគ្នា។
+
+                អ្នកទាំងអស់គ្នានៅតែអាចទំនាក់ទំនងសួរនាំ
+                ញុមបានមិនថាតែរឿងការងារឬរឿងផ្សេងនោះ
+                ទេញុមរីករាយនិងចែករំលែកទៅកាន់អ្នកទាំង
+                អស់គ្នាសួរតាមហ្វេសប៊ុក​ឬតេលេក្រាមមួយ
+                ណាក៏បានប្រសិនបើញុមអាចឆ្លើយបានញុម
+                និងឆ្លើយជូនអ្នកទាំងអស់គ្នា។
+
+                ជាចុងក្រោយសូមជូនពរទៅកាន់អ្នក
+                ទាំងអស់គ្នាជួបតែសេចក្ដីសុខសេចក្តី
+                ចម្រើន​ និងជោគជ័យគ្រប់ភារកិច្ច
+                ខ្ញុំសង្ឃឹមថាយើងនឹងមានឱកាសជួប
+                គ្នាម្ដងទៀតនៅថ្ងៃណាមួយ។
+
+                ពីខ្ញុំ 
+                        ខន ឃន
+            `;
+
+            const renderPage1 = () => {
+                appRoot.innerHTML = `
+                    <div class="bg-white p-8 rounded-xl shadow-2xl max-w-md w-full text-center transform transition-all duration-300 hover:scale-105">
+                        <h1 class="text-3xl font-extrabold text-red-700 mb-2 drop-shadow-md">
+                            សួស្តីក្រុមការងារទាំងអស់
+                        </h1>
+                        <h2 class="text-2xl font-semibold text-blue-700 mb-4">
+                            អនុសាខាស្រីស្នំ
+                        </h2>
+                        <p class="text-gray-700 text-lg mb-8 leading-relaxed">
+                            សូមផ្ញើសារនេះទៅកាន់បុគ្គលិកទាំងអស់នៅអនុសាខាស្រីស្នំ
+                            មុននឹងខ្ញុំ Leave ពី Group ខ្ញុំក៏មានសារលាទៅកាន់
+                            អ្នកទាំងអស់គ្នាផងដែរ។
+                        </p>
+                        <button id="read-more-btn"
+                            class="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-purple-300">
+                            ចុចដើម្បីអានសារលម្អិត
+                        </button>
+                    </div>
+                `;
+                document.getElementById('read-more-btn').onclick = () => {
+                    currentPage = 'page2';
+                    renderApp();
+                };
+            };
+
+            const renderPage2 = () => {
+                appRoot.innerHTML = `
+                    <div class="relative bg-white p-8 rounded-xl shadow-2xl max-w-2xl w-full text-center transform transition-all duration-300 hover:scale-105 overflow-hidden flex flex-col items-center">
+                        <h1 class="text-3xl font-extrabold text-purple-700 mb-2 drop-shadow-md z-20">
+                            My last day
+                        </h1>
+                        <h2 class="text-2xl font-semibold text-blue-700 mb-4 z-20">
+                            សារជូនទៅកាន់អ្នកទាំងអស់គ្នា
+                        </h2>
+
+                        <div class="relative h-64 overflow-hidden w-full px-4 message-container">
+                            <div id="message-content"
+                                class="absolute text-gray-800 text-lg leading-relaxed text-left z-10 whitespace-pre-line"
+                                style="bottom: 0; width: calc(100% - 32px);">
+                                ${detailedMessage}
+                            </div>
+                        </div>
+
+                        <div id="floating-elements-container" class="absolute inset-0 z-0 pointer-events-none">
+                            </div>
+
+                        <button id="go-back-btn"
+                            class="mt-8 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-pink-300 z-20">
+                            រង់ចាំអានសារ និង ចុចសម្រាប់ថយក្រោយ
+                        </button>
+                    </div>
+                `;
+
+                document.getElementById('go-back-btn').onclick = () => {
+                    currentPage = 'page1';
+                    renderApp();
+                };
+
+                const messageContent = document.getElementById('message-content');
+                let messageHeight = 0;
+                // Use setTimeout to allow DOM to render before measuring scrollHeight
+                setTimeout(() => {
+                    messageHeight = messageContent.scrollHeight > 300 ? messageContent.scrollHeight : 300;
+                    messageContent.style.setProperty('--scroll-height', `${messageHeight + 50}px`);
+                    messageContent.style.animation = `scroll-text ${messageHeight / 10}s linear infinite`;
+                }, 0);
+
+
+                const floatingElementsContainer = document.getElementById('floating-elements-container');
+
+                const createHeartIcon = () => {
+                    const initialLeft = Math.random() * 100;
+                    const initialBottom = Math.random() * 10;
+                    const size = 16 + Math.random() * 16;
+                    const animationDuration = 15 + Math.random() * 10;
+                    const animationDelay = Math.random() * 15;
+                    const heartColor = `rgba(${Math.floor(255 - Math.random() * 50)}, ${Math.floor(100 + Math.random() * 50)}, ${Math.floor(150 + Math.random() * 100)}, ${0.6 + Math.random() * 0.4})`;
+
+                    const heartSvg = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="${heartColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-heart">
+                            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                        </svg>
+                    `;
+                    const heartDiv = document.createElement('div');
+                    heartDiv.className = 'heart-icon';
+                    heartDiv.innerHTML = heartSvg;
+                    heartDiv.style.left = `${initialLeft}%`;
+                    heartDiv.style.bottom = `${initialBottom}%`;
+                    heartDiv.style.setProperty('--animation-duration', `${animationDuration}s`);
+                    heartDiv.style.setProperty('--animation-delay', `${animationDelay}s`);
+                    return heartDiv;
+                };
+
+                const createLastDayText = () => {
+                    const initialLeft = Math.random() * 100;
+                    const initialBottom = Math.random() * 10;
+                    const fontSize = 12 + Math.random() * 8;
+                    const animationDuration = 15 + Math.random() * 10;
+                    const animationDelay = Math.random() * 15;
+
+                    const textSpan = document.createElement('span');
+                    textSpan.className = 'last-day-text font-bold text-blue-200 whitespace-nowrap';
+                    textSpan.textContent = 'Khan Khon';
+                    textSpan.style.left = `${initialLeft}%`;
+                    textSpan.style.bottom = `${initialBottom}%`;
+                    textSpan.style.fontSize = `${fontSize}px`;
+                    textSpan.style.setProperty('--animation-duration', `${animationDuration}s`);
+                    textSpan.style.setProperty('--animation-delay', `${animationDelay}s`);
+                    return textSpan;
+                };
+
+                const generateFloatingElements = () => {
+                    floatingElementsContainer.innerHTML = ''; // Clear previous elements
+                    const width = window.innerWidth;
+                    let numHearts, numLastDayTexts;
+
+                    if (width < 640) {
+                        numHearts = 10;
+                        numLastDayTexts = 3;
+                    } else if (width < 1024) {
+                        numHearts = 20;
+                        numLastDayTexts = 5;
+                    } else {
+                        numHearts = 30;
+                        numLastDayTexts = 7;
+                    }
+
+                    for (let i = 0; i < numHearts; i++) {
+                        floatingElementsContainer.appendChild(createHeartIcon());
+                    }
+                    for (let i = 0; i < numLastDayTexts; i++) {
+                        floatingElementsContainer.appendChild(createLastDayText());
+                    }
+                };
+
+                generateFloatingElements();
+                window.addEventListener('resize', generateFloatingElements);
+
+                // Cleanup function for resize event listener when navigating away from Page2
+                const cleanupPage2 = () => {
+                    window.removeEventListener('resize', generateFloatingElements);
+                };
+                // Store cleanup function to be called when page changes
+                appRoot.dataset.cleanup = 'cleanupPage2';
+            };
+
+            const renderApp = () => {
+                // Perform cleanup of previous page's event listeners if any
+                if (appRoot.dataset.cleanup === 'cleanupPage2' && typeof cleanupPage2 === 'function') {
+                    // eslint-disable-next-line no-undef
+                    cleanupPage2();
+                    appRoot.dataset.cleanup = ''; // Clear cleanup flag
+                }
+
+                if (currentPage === 'page1') {
+                    renderPage1();
+                } else {
+                    renderPage2();
+                }
+            };
+
+            renderApp(); // Initial render
+        });
+    </script>
+</body>
+</html>
